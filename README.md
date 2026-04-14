@@ -21,8 +21,10 @@ An AI-powered Resume Analyzer that evaluates resumes against job descriptions us
 - Python
 - Streamlit
 - Groq API (LLaMA 3)
-- NLP Prompt Engineering
-- python-dotenv
+- Prompt Engineering
+- PDF Processing (PyPDF)
+- Hybrid ATS Scoring (LLM + Keyword Matching)
+- Environment Management (python-dotenv)
 - Git & GitHub
 
 ---
