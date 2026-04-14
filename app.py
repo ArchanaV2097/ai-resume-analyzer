@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import extract_text_from_pdf, analyze_resume, get_match_score
+from utils import extract_text_from_pdf, analyze_resume, get_match_score, get_keyword_score
 
 st.set_page_config(
     page_title="ResumeIQ · AI Resume Analyzer",

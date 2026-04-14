@@ -2,6 +2,9 @@ from groq import Groq
 from pypdf import PdfReader
 import os
 import re
+from dotenv import load_dotenv
+
+load_dotenv()  # loads .env file
 
 client = Groq(api_key = os.getenv("GROQ_API_KEY"))
 
@@ -128,8 +131,7 @@ def analyze_resume(resume_text: str, job_description: str) -> dict:
         }
 
 
-
-def get_match_score(resume_text: str, job_description: str) -> int:
+def get_llm_score(resume_text, job_description): 
     """
     Ask Groq to estimate a compatibility score (0-100) between
     the resume and job description.
@@ -165,3 +167,23 @@ def get_match_score(resume_text: str, job_description: str) -> int:
         return min(max(score, 0), 100)  # clamp between 0 and 100
     except ValueError:
         return 0
+
+def get_keyword_score(resume_text: str, job_description: str) -> int:
+    resume_words = set(resume_text.lower().split())
+    jd_words = set(job_description.lower().split())
+
+    if len(jd_words) == 0:
+        return 0
+
+    matched = resume_words.intersection(jd_words)
+
+    score = int(len(matched) / len(jd_words) * 100)
+    return min(max(score, 0), 100)
+
+def get_match_score(resume_text: str, job_description: str) -> int:
+    llm_score = get_llm_score(resume_text, job_description)
+    keyword_score = get_keyword_score(resume_text, job_description)
+
+    final_score = int(0.6 * llm_score + 0.4 * keyword_score)
+
+    return final_score
